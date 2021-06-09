@@ -1,19 +1,19 @@
 {
   "tasks": [
     {
-      "label": "edit1",
+      "label": "java EE",
       "completed": true,
       "id": 1
     },
     {
-      "label": "arabe",
+      "label": "C  programming",
       "completed": true,
       "id": 2
     },
     {
-      "label": "edit2",
+      "label": "react js",
       "completed": true,
-      "id": 3
+      "id": 4
     }
   ]
 }

@@ -9,6 +9,8 @@ import { TskService } from 'src/app/services/tsk.service';
 })
 export class TasksComponent implements OnInit {
 editForm = false;
+displayForm = false;
+searchText = '';
 
   mytask: Task = {
     label: '',
@@ -16,6 +18,7 @@ editForm = false;
   }
 
   tasks: Task[] = [];
+  resulttasks : Task[] = [];
   constructor(private taskService: TskService) { }
 
   ngOnInit(): void {
@@ -23,19 +26,21 @@ editForm = false;
   }
   getTasks(){
     this.taskService.findAll()
-    .subscribe(tasks => this.tasks = tasks)
+    .subscribe(tasks => this.tasks = this.resulttasks = tasks)
+     
   }
   deleteTask(id){
     this.taskService.delete(id)
     .subscribe(() => {
-      this.tasks = this.tasks.filter(task => task.id != id)
+      this.tasks= this.resulttasks = this.tasks.filter(task => task.id != id)
     })
   }
   persistTask(){
     this.taskService.persist(this.mytask)
     .subscribe((task) => {
-      this.tasks = [task, ...this.tasks];
+      this.tasks = this.resulttasks = [task, ...this.tasks];
       this.restTask();
+      this.displayForm = false;
     })
   }
 
@@ -54,6 +59,7 @@ editForm = false;
   editTask(task){
     this.mytask = task;
     this.editForm = true;
+    this.displayForm = true;
   }
   updateTask(task) {
     this.taskService.update(this.mytask)
@@ -61,8 +67,15 @@ editForm = false;
       task = this.mytask;
       this.restTask();
       this.editForm = false;
+      this.displayForm = false;
     })
   }
- 
+
+  sreachTasks() { 
+    this.resulttasks = this.tasks.filter((task) => task.label.toLowerCase().includes(this.searchText.toLowerCase())
+    )
+  }
+  
+  
 
 }
