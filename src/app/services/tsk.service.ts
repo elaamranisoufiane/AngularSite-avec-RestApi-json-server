@@ -6,13 +6,24 @@ import { Task } from '../models/task';
   providedIn: 'root'
 })
 export class TskService {
-
+  url = "http://localhost:3000/tasks";
   constructor(private http: HttpClient) { }
   
   findAll() {
-    return this.http.get<Task[]>("http://localhost:3000/tasks");
+    return this.http.get<Task[]>(this.url);
   }
   delete(id) {
-    return this.http.delete(`http://localhost:3000/tasks/${id}`)
+    return this.http.delete(`${this.url}/${id}`)
   }
+  persist(task) {
+    return this.http.post<Task>(this.url,task);
+  }
+
+  compelted(id, completed) {
+    return this.http.patch(`${this.url}/${id}`,{completed: !completed})
+  }
+  update(task){
+    return this.http.put(`${this.url}/${task.id}`,task);
+  }
+
 }
